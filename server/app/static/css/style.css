@@ -1,0 +1,30 @@
+body {
+    background-color: rgb(15 23 42);
+}
+
+.navbar-default {
+    background-color: rgb(2 132 199);
+    background-image: none;
+    color: white;
+    box-shadow: none;
+}
+
+.navbar-default .navbar-collapse {
+    border: none
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: inherit
+}
+
+.navbar-default .navbar-brand {
+    color: inherit;
+}
+
+.navbar-default .navbar-brand:hover {
+    color: rgb(15 23 42);
+}
+
+table {
+    background-color: #ddd;
+}

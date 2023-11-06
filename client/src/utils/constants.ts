@@ -1,0 +1,3 @@
+const MAX_CHAR_COUNT = 140
+
+export { MAX_CHAR_COUNT }
