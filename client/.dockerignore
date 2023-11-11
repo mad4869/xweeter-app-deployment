@@ -1,0 +1,17 @@
+# NPM
+**/node_modules/
+.git
+.gitignore
+npm-debug.log
+.coverage
+.coverage.*
+.aws
+
+# Docker
+Dockerfile
+.dockerignore
+*.yml
+*.yaml
+
+# Misc
+.vscode

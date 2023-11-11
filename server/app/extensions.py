@@ -29,10 +29,9 @@ jwt_manager = JWTManager()
 
 # Object storage
 mc = Minio(
-    "localhost:9000",
+    "play.min.io:9000",
     access_key=environ.get("MINIO_ACCESS_KEY"),
     secret_key=environ.get("MINIO_SECRET_KEY"),
-    secure=False,
 )
 
 # Websocket
