@@ -1,1 +1,53 @@
 version: '3'
+services:
+  xweeter:
+    image: xweeter:latest
+    container_name: xweeter-container
+    restart: always
+    ports:
+      - 4173:4173
+    volumes:
+      - xweeter-volume:/app/data
+    command: npm run preview
+    depends_on:
+      - xweeter-api
+    networks:
+      - xweeter-network
+  xweeter-api:
+    image: xweeter-api:latest
+    container_name: xweeter-api-container
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - xweeter-api-volume:/app/data
+    environment:
+      - POSTGRES_HOST=postgresql-container
+      - POSTGRES_DB=xweeter-db
+    env_file:
+      - xweeter-api.env
+    depends_on:
+      - postgres
+    networks:
+      - xweeter-network
+  postgres:
+    image: postgres:latest
+    container_name: postgresql-container
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=xweeter-db
+    env_file:
+      - postgres.env
+    networks:
+      - xweeter-network
+networks:
+  xweeter-network:
+    external: true
+volumes:
+  xweeter-volume:
+    external: true
+  xweeter-api-volume:
+    external: true

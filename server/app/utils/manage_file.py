@@ -1,7 +1,3 @@
-# import base64
-# import io
-# import uuid
-# import imghdr
 import os
 from werkzeug.utils import secure_filename
 
