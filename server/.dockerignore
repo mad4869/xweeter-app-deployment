@@ -1,11 +1,10 @@
-# Flask/python
+# Flask/Python
 __pycache__
 *.pyc
 *.pyo
 *.pyd
 .Python
 env
-.env-sample
 pip-log.txt
 pip-delete-this-directory.txt
 .tox
@@ -24,8 +23,11 @@ coverage.xml
 # Virtual Env
 x-venv
 
-# Meta
+# Docker
 Dockerfile
 .dockerignore
 *.yml
 *.yaml
+
+# Misc
+.vscode

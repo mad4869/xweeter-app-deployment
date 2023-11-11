@@ -1,17 +1,19 @@
-# Use python as the base image
 FROM python:3.10
 
 LABEL version="1.0"
 
-# Set the working directory
 WORKDIR /xweeter-api
 
-# Install the dependencies
 COPY . .
 RUN pip install -r requirements.txt
 
-# Set the port
+ENV FLASK_APP="run.py"
+ENV FLASK_DEBUG=1
+ENV ENVIRONMENT="development"
+ENV POSTGRES_USER="postgres"
+ENV POSTGRES_PORT="5432"
+ENV TZ="Asia/Jakarta"
+
 EXPOSE 5000
 
-# Set the command to run the app
 CMD ["flask", "run", "--host=0.0.0.0"]
