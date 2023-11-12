@@ -78,7 +78,7 @@ def get_daily_top_users():
             db.func.count(Xweet.xweet_id).label("xweet_count"),
         )
         .join(Xweet)
-        .filter(db.func.date(Xweet.created_at) == db.func.date(db.func.now()))
+        .filter(db.func.date(Xweet.created_at) == db.func.date(datetime.now()))
         .group_by(User.user_id, User.username, User.full_name)
         .order_by(db.func.count(Xweet.xweet_id).desc())
     )
