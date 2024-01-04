@@ -70,7 +70,7 @@ watch(() => arrivedState.bottom, async () => {
     <section class="flex flex-col gap-2 max-h-screen overflow-y-scroll scrollbar-hide" ref="repliesRef">
         <Xweet v-for="reply in replies"
             :key="reply.xweet_id"
-            :id="reply.reply_id!"
+            :id="reply.xweet_id!"
             :userId="reply.user_id!"
             :fullname="reply.full_name!" 
             :username="reply.username!" 

@@ -17,14 +17,14 @@ def add_to_replies(xweet_id):
         db.select(Reply)
         .join(Xweet, Reply.xweet_id == Xweet.xweet_id)
         .join(User, Xweet.user_id == User.user_id)
-        .filter(Xweet.xweet_id == xweet_id)
+        .filter(Reply.xweet_id == xweet_id)
         .order_by(Reply.created_at.desc())
         .limit(1)
     ).scalar_one_or_none()
     reply_data = reply.serialize()
-    reply_data["username"] = reply.xweets.users.username
-    reply_data["full_name"] = reply.xweets.users.full_name
-    reply_data["profile_pic"] = reply.xweets.users.profile_pic
+    reply_data["username"] = reply.users.username
+    reply_data["full_name"] = reply.users.full_name
+    reply_data["profile_pic"] = reply.users.profile_pic
 
     emit("add_to_replies", reply_data, broadcast=True)
 
