@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://xweeter-api-container:5000',
+        target: 'https://3.26.179.180:5000',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       },
