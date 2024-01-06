@@ -37,3 +37,38 @@ jobs:
                 file: ./client/Dockerfile
                 push: true
                 tags: ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }} 
+    
+    deploy:
+        name: Deploy to Server
+        runs-on: self-hosted
+        needs: build_push
+
+        steps:
+            - name: Pull Newest Images
+              run: |
+                docker pull postgres:latest
+                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
+                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }}
+            
+            - name: Stop and Remove Existing Containers and Networks
+              run: |
+                docker stop $(docker ps -a -q) && docker rm $(docker ps -a -q)
+                docker network prune -f
+
+            - name: Create Network and Volume
+              run: |
+                docker network create xweeter-network
+                docker volume create xweeter-api-volume
+                docker volume create xweeter-volume
+                
+            - name: Run Containers
+              run: |
+                docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db --network xweeter-network --name postgres-container postgres
+                sleep 5
+                docker run -d -p 5000:5000 -v xweeter-api-volume -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db -e POSTGRES_HOST=postgres-container --network xweeter-network --name xweeter-api-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
+                sleep 5
+                docker run -d -p 4173:4173 -v xweeter-volume --network xweeter-network --name xweeter-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }}
+            
+            - name: Remove Unused Data
+              run: |
+                docker system prune -af
