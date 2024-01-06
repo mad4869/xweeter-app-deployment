@@ -68,6 +68,12 @@ jobs:
                 docker run -d -p 5000:5000 -v xweeter-api-volume -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db -e POSTGRES_HOST=postgres-container --network xweeter-network --name xweeter-api-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
                 sleep 5
                 docker run -d -p 4173:4173 -v xweeter-volume --network xweeter-network --name xweeter-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }}
+
+            - name: Connect Backend with the Database
+              run: |
+                docker exec xweeter-api-container flask db init
+                docker exec xweeter-api-container flask db migrate
+                docker exec xweeter-api-container flask db upgrade
             
             - name: Remove Unused Data
               run: |
