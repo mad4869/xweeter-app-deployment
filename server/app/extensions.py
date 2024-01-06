@@ -35,12 +35,7 @@ mc = Minio(
 )
 
 # Websocket
-socket = SocketIO(
-    cors_allowed_origins=[
-        "http://xweeter.strangled.net",
-        "https://xweeter.strangled.net",
-    ]
-)
+socket = SocketIO(cors_allowed_origins="*")
 
 # Admin management
 admin = Admin(name="Xweeter Admin", template_mode="bootstrap3")

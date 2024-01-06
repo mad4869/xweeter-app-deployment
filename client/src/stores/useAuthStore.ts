@@ -45,7 +45,6 @@ const useAuthStore = defineStore('auth', {
                 }
             } catch (error) {
                 const err = error as AxiosError
-                console.error(err)
 
                 if (err.response?.status === 400) {
                     const data = err.response.data as { success: boolean, message: string }
