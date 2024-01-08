@@ -41,4 +41,4 @@ jobs:
             - name: Testing
               run: |
                 sleep 20
-                pytest server/test/main.py
+                pytest server/test/test.py
