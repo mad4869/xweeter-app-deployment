@@ -29,14 +29,18 @@ class UnitTest:
     def teardown_class(cls):
         cls.driver.quit()
 
-    def test_login(self):
-        self.driver.find_element(By.CSS_SELECTOR, "button:nth-child(2)").click()
+    def test_register_login(self):
+        self.driver.find_element(By.ID, "fullname").click()
+        self.driver.find_element(By.ID, "fullname").send_keys("User")
         self.driver.find_element(By.ID, "username").click()
-        self.driver.find_element(By.ID, "username").send_keys("akbar")
+        self.driver.find_element(By.ID, "username").send_keys("myuser")
+        self.driver.find_element(By.ID, "email").click()
+        self.driver.find_element(By.ID, "email").send_keys("myuser@email.com")
         self.driver.find_element(By.ID, "password").click()
-        self.driver.find_element(By.ID, "password").send_keys("pneumonic")
+        self.driver.find_element(By.ID, "password").send_keys("mypassword")
+        self.driver.find_element(By.ID, "confirm-password").click()
+        self.driver.find_element(By.ID, "confirm-password").send_keys("mypassword")
         self.driver.find_element(By.CSS_SELECTOR, ".w-24").click()
-        self.driver.find_element(By.CSS_SELECTOR, "div:nth-child(2) > .gap-4").click()
 
         try:
             WebDriverWait(self.driver, 10).until(
