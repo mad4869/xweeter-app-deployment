@@ -106,12 +106,12 @@ class UnitTest:
                 EC.presence_of_element_located(
                     (
                         By.CSS_SELECTOR,
-                        ".font-bold.text-sky-800.fade-in.dark:text-sky-600",
+                        "div.fixed.flex.items-center.gap-4.px-4.py-2.text-white.-translate-x-1/2.rounded-md.left-1/2.bottom-4 div.flex-1 > p",
                     )
                 )
             )
             assert (
-                message.text == "You fixed your xweet!"
+                message.text == "Your xweet has been deleted"
             ), "Success message is not found. Failed to delete xweet."
             print("Xweet deleted successfully.")
         except Exception as e:
