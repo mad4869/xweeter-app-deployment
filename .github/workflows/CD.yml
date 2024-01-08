@@ -28,7 +28,7 @@ jobs:
                 context: ./server
                 file: ./server/Dockerfile
                 push: true
-                tags: ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
+                tags: ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:latest
             
             - name: Build and Push Xweeter
               uses: docker/build-push-action@v4
@@ -36,7 +36,7 @@ jobs:
                 context: ./client
                 file: ./client/Dockerfile
                 push: true
-                tags: ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }} 
+                tags: ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:latest 
     
     deploy:
         name: Deploy to Server
@@ -47,8 +47,8 @@ jobs:
             - name: Pull Newest Images
               run: |
                 docker pull postgres:latest
-                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
-                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }}
+                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:latest
+                docker pull ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:latest
             
             - name: Stop and Remove Existing Containers and Networks
               run: |
@@ -65,9 +65,9 @@ jobs:
               run: |
                 docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db --network xweeter-network --name postgres-container postgres
                 sleep 5
-                docker run -d -p 5000:5000 -v xweeter-api-volume -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db -e POSTGRES_HOST=postgres-container --network xweeter-network --name xweeter-api-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:${{ github.run_number }}
+                docker run -d -p 5000:5000 -v xweeter-api-volume -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} -e POSTGRES_DB=x-db -e POSTGRES_HOST=postgres-container --network xweeter-network --name xweeter-api-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter-api:latest
                 sleep 5
-                docker run -d -p 4173:4173 -v xweeter-volume --network xweeter-network --name xweeter-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:${{ github.run_number }}
+                docker run -d -p 4173:4173 -v xweeter-volume --network xweeter-network --name xweeter-container ${{ secrets.DOCKERHUB_USERNAME }}/xweeter:latest
 
             - name: Connect Backend with the Database
               run: |

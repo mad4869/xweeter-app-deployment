@@ -1,7 +1,7 @@
 version: '3'
 services:
   xweeter:
-    image: xweeter:latest
+    image: mad4869/xweeter:latest
     container_name: xweeter-container
     restart: always
     ports:
@@ -14,7 +14,7 @@ services:
     networks:
       - xweeter-network
   xweeter-api:
-    image: xweeter-api:latest
+    image: mad4869/xweeter-api:latest
     container_name: xweeter-api-container
     restart: always
     ports:
