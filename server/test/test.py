@@ -19,7 +19,7 @@ for option in options:
     chrome_options.add_argument(option)
 
 
-class UnitTest:
+class TestFeatures:
     @classmethod
     def setup_class(cls):
         cls.driver = webdriver.Chrome(options=chrome_options)
