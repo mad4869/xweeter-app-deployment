@@ -17,6 +17,12 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt-get install -y docker-compose
+            
+            - name: Create Network and Volume
+              run: |
+                docker network create xweeter-network
+                docker volume create xweeter-api-volume
+                docker volume create xweeter-volume
 
             - name: Build and Run Container
               env:
