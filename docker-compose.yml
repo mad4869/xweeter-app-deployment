@@ -24,8 +24,6 @@ services:
     environment:
       - POSTGRES_HOST=postgresql-container
       - POSTGRES_DB=xweeter-db
-    env_file:
-      - xweeter-api.env
     depends_on:
       - postgres
     networks:
@@ -39,8 +37,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=xweeter-db
-    env_file:
-      - postgres.env
     networks:
       - xweeter-network
 networks:

@@ -19,6 +19,12 @@ jobs:
                 sudo apt-get install -y docker-compose
 
             - name: Build and Run Container
+              env:
+                SECRET_KEY: ${{ secrets.SECRET_KEY }}
+                POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+                MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+                MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+                JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
               run: |
                 sudo docker-compose up -d
 
