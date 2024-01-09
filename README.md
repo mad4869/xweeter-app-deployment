@@ -67,7 +67,7 @@ To run the app inside a Docker container, we need to create a __Dockerfile__ for
 
 #### Dockerfile for Vue app
 
-```docker
+```dockerfile
 FROM node:18
 
 LABEL version="1.0"
@@ -87,7 +87,7 @@ CMD ["npm", "run", "preview"]
 
 #### Dockerfile for Flask app
 
-```docker
+```dockerfile
 FROM python:3.10
 
 LABEL version="1.0"
