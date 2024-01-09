@@ -12,6 +12,8 @@ There are five steps to deploy the app to the server and make it accessible on t
 4. Configuring the web server using Nginx
 5. Creating a domain name
 
+## Steps Explanation
+
 ### 1. Preparing the server
 
 In this project, I am using an Ubuntu virtual machine on an EC2 instance from Amazon Web Services. There are several steps involved in preparing the server.
@@ -113,7 +115,7 @@ CMD ["flask", "run", "--host=0.0.0.0"]
 version: '3'
 services:
   xweeter:
-    image: xweeter:latest
+    image: mad4869/xweeter:latest
     container_name: xweeter-container
     restart: always
     ports:
@@ -126,7 +128,7 @@ services:
     networks:
       - xweeter-network
   xweeter-api:
-    image: xweeter-api:latest
+    image: mad4869/xweeter-api:latest
     container_name: xweeter-api-container
     restart: always
     ports:
@@ -136,8 +138,6 @@ services:
     environment:
       - POSTGRES_HOST=postgresql-container
       - POSTGRES_DB=xweeter-db
-    env_file:
-      - xweeter-api.env
     depends_on:
       - postgres
     networks:
@@ -151,8 +151,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=xweeter-db
-    env_file:
-      - postgres.env
     networks:
       - xweeter-network
 networks:
@@ -199,8 +197,20 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt-get install -y docker-compose
+            
+            - name: Create Network and Volume
+              run: |
+                docker network create xweeter-network
+                docker volume create xweeter-api-volume
+                docker volume create xweeter-volume
 
             - name: Build and Run Container
+              env:
+                SECRET_KEY: ${{ secrets.SECRET_KEY }}
+                POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+                MINIO_ACCESS_KEY: ${{ secrets.MINIO_ACCESS_KEY }}
+                MINIO_SECRET_KEY: ${{ secrets.MINIO_SECRET_KEY }}
+                JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
               run: |
                 sudo docker-compose up -d
 
@@ -210,13 +220,13 @@ jobs:
             
             - name: Testing
               run: |
-                sleep 20
-                pytest server/test/main.py
+                sleep 5
+                pytest server/test/test.py
 ```
 
 In the CI process, the operations run inside an Ubuntu runner provided by the GitHub. For the testing phase, __Selenium__ and __pytest__ are utilized. The process starts once a pull request is submitted.
 
-![CI process]()
+![CI process](docs/ci.png)
 
 #### CD.yml
 
@@ -314,11 +324,11 @@ For the first task, the process runs inside an Ubuntu runner provided by GitHub,
 
 The process starts once there is a push to the `main` branch.
 
-![CD process]()
+![CD process](docs/cd.png)
 
 The app now can be accessed on the server.
 
-![The app on the server]()
+![The app on the server](docs/deployed.png)
 
 ### 4. Configuring the web server
 
@@ -373,19 +383,15 @@ sudo nginx -t
 
 If there are no errors, the app can now be accessed directly without the need to specify the port.
 
-![The app can be accessed without specifying the port after the reverse proxy by Nginx]()
-
 ### 5. Creating a domain name
 
 The final step is to create a domain name to make the server accessible without relying on the public IP. Additionally, we need to install an SSL certificate to ensure the connection is secure via HTTPS. In this project, I am using [FreeDNS](https://freedns.afraid.org/) to create a domain name and __Certbot__ to generate an SSL certificate.
 
 #### Creating a domain in FreeDNS
 
-![Domain in FreeDNS]()
+![Domain in FreeDNS](docs/domain.png)
 
-Now we can access the app in the domain [xweeter.strangled.net](http://xweeter.strangled.net)
-
-![Web accessed via a domain name]()
+Now we can access the app in the domain [xweeter.strangled.net](https://xweeter.strangled.net)
 
 #### Installing Certbot
 
@@ -396,12 +402,12 @@ sudo apt install certbot python3-certbot-nginx
 #### Generating an SSL certificate using Certbot
 
 ```bash
-sudo certbot --nginx -d "xweeter.crabdance.com"
+sudo certbot --nginx -d "xweeter.strangled.net"
 ```
 
 After generating the SSL certificate, the connection is now secured with HTTPS.
 
-![Connection already on HTTPS]()
+![Web accessed via a domain name and connection already on HTTPS](docs/https.png)
 
 ## Conclusion
 
