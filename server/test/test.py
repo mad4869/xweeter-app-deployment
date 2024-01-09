@@ -29,7 +29,7 @@ class TestFeatures:
     def teardown_class(cls):
         cls.driver.quit()
 
-    def test_login(self):
+    def test_register_login(self):
         self.driver.find_element(By.ID, "fullname").click()
         self.driver.find_element(By.ID, "fullname").send_keys("User")
         self.driver.find_element(By.ID, "username").click()
