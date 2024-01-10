@@ -200,5 +200,6 @@ schema.txt
 # Recommended template: Node.gitignore
 
 presentation/
+xweeter-key.pem
 
 # End of https://www.toptal.com/developers/gitignore/api/vue,flask
